@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
     private MyAdapter adapter;
     private List<String> itemList;
-    private Button addButton, removeButton;
 
     private static final int REQUEST_CODE = 1; // Request code for result
     private static final int RESULT_DELETE = SubActivity.RESULT_DELETE; // Result code for delete
@@ -35,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         itemList.add("산책하기");
         itemList.add("밥하고 빨리하고 청소하기");
 
-        recyclerView = findViewById(R.id.recycler_view);
-        addButton = findViewById(R.id.add_button);
-        removeButton = findViewById(R.id.remove_button);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        Button addButton = findViewById(R.id.add_button);
+        EditText editText = findViewById(R.id.add_todo_title);
 
         adapter = new MyAdapter(this, itemList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,20 +45,8 @@ public class MainActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.addItem("New Item " + (itemList.size() + 1));
+                adapter.addItem(String.valueOf(editText.getText()));
                 Toast.makeText(MainActivity.this, "Item Added", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!itemList.isEmpty()) {
-                    adapter.removeItem(0);
-                    Toast.makeText(MainActivity.this, "Item Removed", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "No Items to Remove", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
